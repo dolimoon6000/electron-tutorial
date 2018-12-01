@@ -9,7 +9,7 @@ app.on('ready', function () {
         show: false
     }); // appWindow
 
-    appWindow.loadURL('http://raybo.org');
+    appWindow.loadURL('file://' + __dirname + '/index.html');
 
     infoWindow = new BrowserWindow({
         width: 400,
@@ -23,10 +23,6 @@ app.on('ready', function () {
 
     appWindow.once('ready-to-show', function () {
         appWindow.show();
-        setTimeout(function () {
-            infoWindow.show();
-            // setTimeout(function () { infoWindow.hide(); }, 3000);
-        }, 1000);
     }); // ready-to-show
 
     ipc.on('closeInfoWindow', function (event, arg) {
