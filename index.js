@@ -21,6 +21,13 @@ app.on('ready', function () {
 
     appWindow.once('ready-to-show', function () {
         appWindow.show();
-        infoWindow.show();
+        setTimeout(function () {
+            infoWindow.show();
+            setTimeout(function () {
+               infoWindow.hide();
+            }, 3000);
+        }, 1000);
     })
+
+
 });
