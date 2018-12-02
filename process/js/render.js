@@ -41,6 +41,18 @@ class MainInterface extends React.Component {
         });
     }
 
+    componentDidMount() {
+        ipc.on('addAppointment', (event, message) => {
+            this.toggleAptDisplay();
+        });
+    }
+
+    componentWillUnmount() {
+        ipc.removeListener('addAppointment', (event, message) => {
+            this.toggleAptDisplay();
+        });
+    }
+
     deleteMessage(item) {
        var allApts = this.state.myAppointments;
        var newApts = _.without(allApts, item);

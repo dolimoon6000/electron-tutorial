@@ -42,9 +42,20 @@ app.on('ready', function () {
             label: 'Wisdom Pet',
             submenu: [
                 {
+                    label: 'Add Appointment'   ,
+                    accelerator: process.platform === 'darwin' ? 'Command+N' : 'Ctrl+N',
+                    click(item, focusedWindow) {
+                        if (focusedWindow) {
+                            focusedWindow.webContents.send('addAppointment');
+                        }
+                    }
+                },
+                {
                     role: 'help',
                     label: 'Help Out Website',
-                    click() { electron.shell.openExternal('http://raybo.org')}
+                    click() {
+                        electron.shell.openExternal('http://raybo.org')
+                    }
                 },
                 {role: 'close'},
                 {role: 'quit'},
@@ -59,6 +70,20 @@ app.on('ready', function () {
                 {role: 'copy'},
                 {role: 'paste'},
                 {role: 'selectall'}
+            ]
+        },
+        {
+            label: 'View',
+            submenu: [
+                {role: 'reload'},
+                {role: 'forcereload'},
+                {role: 'toggledevtools'},
+                {type: 'separator'},
+                {role: 'resetzoom'},
+                {role: 'zoomin'},
+                {role: 'zoomout'},
+                {type: 'separator'},
+                {role: 'togglefullscreen'}
             ]
         }
     ];
