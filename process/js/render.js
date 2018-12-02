@@ -18,6 +18,14 @@ class MainInterface extends React.Component {
         this.deleteMessage = this.deleteMessage.bind(this);
     }
 
+    componentDidUpdate() {
+        fs.writeFile(dataLocation, JSON.stringify(this.state.myAppointments), 'utf8', function (err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+    }
+
     deleteMessage(item) {
        var allApts = this.state.myAppointments;
        var newApts = _.without(allApts, item);
