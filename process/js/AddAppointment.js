@@ -1,5 +1,20 @@
 var React = require('React');
 
+var defaultDate = new Date();
+defaultDate.setDate(defaultDate.getDate() + 14);
+
+function formatDate(date, divider) {
+  var someday = new Date(date);
+  var month = someday.getUTCMonth() + 1;
+  var day = someday.getUTCDate();
+  var year = someday.getUTCFullYear();
+
+  if (month <= 9) { month = '0' + month; }
+  if (day <= 9) { day = '0' + day; }
+
+  return ('' + year + divider + month + divider + day);
+}
+
 class AddAppointment extends React.Component {
     constructor(props) {
         super(props);
@@ -21,6 +36,12 @@ class AddAppointment extends React.Component {
         };
 
         this.props.addApt(tempItem);
+
+        this.inputPetName.value = '';
+        this.inputPetOwner.value = '';
+        this.inputAptDate.value = formatDate(defaultDate, '-');
+        this.inputAptTime.value = '09:00';
+        this.inputAptNotes.value = '';
     }
 
     render() {
@@ -55,7 +76,9 @@ class AddAppointment extends React.Component {
                                 <div className="col-sm-9">
                                     <input type="date" className="form-control"
                                             ref={ref => this.inputAptDate = ref }
-                                           id="aptDate"/>
+                                           id="aptDate"
+                                           defaultValue={formatDate(defaultDate, '-')}
+                                    />
                                 </div>
                             </div>
                             <div className="form-group row">
@@ -63,15 +86,16 @@ class AddAppointment extends React.Component {
                                 <div className="col-sm-9">
                                     <input type="time" className="form-control"
                                             ref={ref => this.inputAptTime = ref }
-                                           id="aptTime"/>
+                                           id="aptTime" defaultValue={'09:00'}/>
                                 </div>
                             </div>
                             <div className="form-group row">
                                 <label className="col-sm-3 control-label" htmlFor="aptNotes">Apt. Notes</label>
                                 <div className="col-sm-9">
-                  <textarea className="form-control" rows="4" cols="50"
-                            id="aptNotes" placeholder="Appointment Notes"
-                            ref={ref => this.inputAptNotes = ref } ></textarea>
+                                  <textarea className="form-control" rows="4" cols="50"
+                                    id="aptNotes" placeholder="Appointment Notes"
+                                    ref={ref => this.inputAptNotes = ref }
+                                  />
                                 </div>
                             </div>
                             <div className="form-group row">
