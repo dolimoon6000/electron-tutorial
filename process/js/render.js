@@ -19,6 +19,8 @@ class MainInterface extends React.Component {
         super(props);
         this.state = {
             myAppointments: loadApts,
+            orderBy: 'petName',
+            orderDir: 'asc',
             aptBodyVisible: false,
             queryText: ''
         };
@@ -28,6 +30,7 @@ class MainInterface extends React.Component {
         this.toggleAptDisplay = this.toggleAptDisplay.bind(this);
         this.addItem = this.addItem.bind(this);
         this.searchApts = this.searchApts.bind(this);
+        this.reOrder = this.reOrder.bind(this);
     }
 
     componentDidUpdate() {
@@ -73,10 +76,16 @@ class MainInterface extends React.Component {
         });
     }
 
+    reOrder(orderBy, orderDir) {
+        this.setState({
+            orderBy,
+            orderDir
+        });
+    }
+
     render() {
         var filteredApts = [];
-        var queryText = this.state.queryText;
-        var myAppointments = this.state.myAppointments;
+        var { orderBy, orderDir, queryText, myAppointments } = this.state;
 
         if (this.state.aptBodyVisible === true) {
             $('#addAppointment').modal('show');
@@ -95,13 +104,22 @@ class MainInterface extends React.Component {
             }
         });
 
+        filteredApts = _.orderBy(filteredApts, item => {
+            return item[orderBy].toLowerCase();
+        }, orderDir);
+
         filteredApts = filteredApts.map((item, index) => {
             return <AptList key={index} singleItem={item} whichItem={item} onDelete={this.deleteMessage}/>
         });
 
         return (
             <div className="application">
-                <HeaderNav onSearch={this.searchApts}/>
+                <HeaderNav
+                    onSearch={this.searchApts}
+                    orderBy={this.state.orderBy}
+                    orderDir={this.state.orderDir}
+                    onReOrder={this.reOrder}
+                />
                 <div className="interface">
                     <Toolbar handleAbout={this.showAbout} handleToggle={this.toggleAptDisplay}/>
                     <AddAppointment
