@@ -16,7 +16,7 @@ class AptList extends React.Component {
             <li className="pet-item media">
                 <div className="media-left">
                     <button className="pet-delete btn btn-xs btn-danger" onClick={this.handleDelete}>
-                        <span className="glyphicon glyphicon-remove"></span>
+                        <span className="glyphicon glyphicon-remove">X</span>
                     </button>
 
                 </div>
