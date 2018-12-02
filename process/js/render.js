@@ -10,16 +10,19 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var AptList = require('./AptList');
 var Toolbar = require('./Toolbar');
+var AddAppointment = require('./AddAppointment');
 
 class MainInterface extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            myAppointments: loadApts
+            myAppointments: loadApts,
+            aptBodyVisible: false
         };
 
         this.deleteMessage = this.deleteMessage.bind(this);
         this.showAbout = this.showAbout.bind(this);
+        this.toggleAptDisplay = this.toggleAptDisplay.bind(this);
     }
 
     componentDidUpdate() {
@@ -38,12 +41,27 @@ class MainInterface extends React.Component {
        });
     }
 
+    toggleAptDisplay() {
+        console.log('toggleAptDisplay');
+        var tempVisibility = !this.state.aptBodyVisible;
+        this.setState({
+            aptBodyVisible: tempVisibility
+        });
+    }
+
     showAbout() {
        ipc.sendSync('openInfoWindow');
     }
 
     render() {
         var myAppointments = this.state.myAppointments;
+
+        if (this.state.aptBodyVisible === true) {
+            $('#addAppointment').modal('show');
+        } else {
+            $('#addAppointment').modal('hide');
+        }
+
         myAppointments = myAppointments.map((item, index) => {
             return <AptList key={index} singleItem={item} whichItem={item} onDelete={this.deleteMessage}/>
         });
@@ -51,7 +69,8 @@ class MainInterface extends React.Component {
         return (
             <div className="application">
                 <div className="interface">
-                    <Toolbar handleAbout={this.showAbout}/>
+                    <Toolbar handleAbout={this.showAbout} handleToggle={this.toggleAptDisplay}/>
+                    <AddAppointment handleToggle={this.toggleAptDisplay} />
                     <div className="container">
                         <div className="row">
                             <div className="appointments col-sm-12">
