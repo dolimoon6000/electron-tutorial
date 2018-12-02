@@ -2,6 +2,7 @@ var $ = jQuery = require('jquery');
 var bootstrap = require('bootstrap');
 var fs = eRequire('fs');
 var loadApts = JSON.parse(fs.readFileSync(dataLocation));
+var _ = require('lodash');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -13,10 +14,24 @@ class MainInterface extends React.Component {
         this.state = {
             myAppointments: loadApts
         };
+
+        this.deleteMessage = this.deleteMessage.bind(this);
+    }
+
+    deleteMessage(item) {
+       var allApts = this.state.myAppointments;
+       var newApts = _.without(allApts, item);
+       this.setState({
+           myAppointments: newApts
+       });
     }
 
     render() {
         var myAppointments = this.state.myAppointments;
+        myAppointments = myAppointments.map((item, index) => {
+            return <AptList key={index} singleItem={item} whichItem={item} onDelete={this.deleteMessage}/>
+        });
+
         return (
             <div className="application">
                 <div className="container">
@@ -24,11 +39,7 @@ class MainInterface extends React.Component {
                         <div className="appointments col-sm-12">
                             <h2 className="appointments-headline">Current Appointments</h2>
                             <ul className="item-list media-list">
-                                {
-                                    myAppointments.map(function (item, index) {
-                                        return <AptList key={index} singleItem={item} />
-                                    })
-                                }
+                                {myAppointments}
                             </ul>
                         </div>
                         {/* col-sm-12 */}
