@@ -5,6 +5,7 @@ var loadApts = JSON.parse(fs.readFileSync(dataLocation));
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+var AptList = require('./AptList');
 
 class MainInterface extends React.Component {
     constructor(props) {
@@ -23,19 +24,11 @@ class MainInterface extends React.Component {
                         <div className="appointments col-sm-12">
                             <h2 className="appointments-headline">Current Appointments</h2>
                             <ul className="item-list media-list">
-
-                                <li className="pet-item media">
-                                    <div className="pet-info media-body">
-                                        <div className="pet-head">
-                                            <span className="pet-name">{myAppointments[0].petName}</span>
-                                            <span className="apt-date pull-right">{myAppointments[0].aptDate}</span>
-                                        </div>
-                                        <div className="owner-name"><span className="label-item">Owner:</span>
-                                            {myAppointments[0].ownerName}</div>
-                                        <div className="apt-notes">{myAppointments[0].aptNotes}</div>
-                                    </div>
-                                </li>
-
+                                {
+                                    myAppointments.map(function (item, index) {
+                                        return <AptList key={index} singleItem={item} />
+                                    })
+                                }
                             </ul>
                         </div>
                         {/* col-sm-12 */}
